@@ -1,7 +1,9 @@
 import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
+
 from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR, WordleGWindow, N_COLS, N_ROWS #, set_square_letter, get_square_letter
+
 
 def wordle():
 
@@ -25,6 +27,7 @@ def wordle():
     # gridSpaces = [0,1,2,3,4]
     # for i in gridSpaces:
     #     gw.set_square_letter(0,i,letterList[i])
+
 
     def enter_action(s):
         # Get row from
