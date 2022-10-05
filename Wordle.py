@@ -2,7 +2,7 @@ import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
 
-from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR, WordleGWindow, N_COLS, N_ROWS #, set_square_letter, get_square_letter
+from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR, WordleGWindow, N_COLS, N_ROWS
 
 
 def wordle():
@@ -11,7 +11,7 @@ def wordle():
     gw = WordleGWindow()
     
     # get random word
-    randomWord = random.choice(FIVE_LETTER_WORDS)
+    randomWord = "sassy" #random.choice(FIVE_LETTER_WORDS)
     #print(randomWord)
 
     # split random word into 5 distinct letters
@@ -30,7 +30,7 @@ def wordle():
 
 
     def enter_action(s):
-        # Get row from
+        # Get row from window
         row = gw.get_current_row()
 
         # Get word from window:
@@ -48,26 +48,46 @@ def wordle():
             if correctWord == guessedWord:
                 for spot in range(0, 5):
                     gw.set_square_color(row, spot, CORRECT_COLOR)
+                    #gw.set_key_color(wordLetters[spot], CORRECT_COLOR)
 
                 if row == 0:
                     gw.show_message("You guessed the word in " + str(row + 1) + " guess!")
                 else:
                     gw.show_message("You guessed the word in " + str(row + 1) + " guesses!")
 
-                #END GAME <NEED TO IMPLEMENT>
+                #END GAME <NEED TO IMPLEMENT???>
             
             # If the word doesn't match exactly Update Colors and Squares
             else:
                 for spot in range(0, 5):
                     # If correct letter && correct spot === turn green (CORRECT_COLOR); Can reuse letter
                     if wordLetters[spot] == letterList[spot]:
+
                         gw.set_square_color(row, spot, CORRECT_COLOR)
                         gw.show_message("Incorrect. Keep Guessing")
              
                     # If correct letter NOT correct spot == turn yellow (PRESENT_COLOR); Can reuse letter
                     elif wordLetters[spot] in letterList:
-                        gw.set_square_color(row, spot, PRESENT_COLOR)
-                        gw.show_message("Incorrect. Keep Guessing")
+                        
+                        # Get the number of times a letter appears in the correct word
+                        numLetterGuessedWord = wordLetters.count(wordLetters[spot])
+                        numLetterCorrectWord = letterList.count(wordLetters[spot])
+
+                        # If guessed word has double letters
+                        if numLetterGuessedWord > 1:
+                            
+                            #If correct word has double letters
+                            if numLetterCorrectWord > 1:
+                                gw.set_square_color(row, spot, PRESENT_COLOR)
+
+                            #If correct word has no double letters
+                            if numLetterCorrectWord == 1:
+                                gw.set_square_color(row, spot, MISSING_COLOR)
+
+                        # If single letter
+                        if numLetterGuessedWord == 1:
+                            gw.set_square_color(row, spot, PRESENT_COLOR)
+                            gw.show_message("Incorrect. Keep Guessing")
 
                     # If NOT correct letter && NOT correct spot == turn red (MISSING_COLOR); Can't letter
                     else:
@@ -81,8 +101,6 @@ def wordle():
         # If NOT a legitmate word then display: "Not in word list
         else:
             gw.show_message("Not in word list.")
-
-        
 
     # gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
